@@ -4,9 +4,15 @@ function p(text) {
 
 const PORT = process.env.PORT || 4000;
 
+const mongoose = require("mongoose");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
+
+// connect to mongodb
+const dbURI =
+  "mongodb+srv://boiledpotatos:tomato1234@endgame.ttbgl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+mongoose.connect(dbURI);
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
