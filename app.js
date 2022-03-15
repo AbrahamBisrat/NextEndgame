@@ -8,11 +8,23 @@ const mongoose = require("mongoose");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-const userdb = require("./models/user");
+const userDB = require("./models/user");
+const fs = require("fs");
 
 // connect to mongodb
-const dbURI =
-  "mongodb+srv://boiledpotatos:tomato1234@endgame.ttbgl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+let dbURI;
+function readContent(callback) {
+  fs.readFile("./dbURI.txt", "utf8", function (err, content) {
+    if (err) return callback(err);
+    callback(null, content);
+  });
+}
+
+readContent(function (err, content) {
+  p(content);
+  dbURI = content;
+});
+p("db string ", typeof dbURI);
 mongoose
   .connect(dbURI)
   .then((result) => {
@@ -28,7 +40,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 // mongoose and mongo sandbox routes
 
 app.get("/", (req, res) => {
-  p("Index has been requested");
+  //   p("Index has been requested");
   //   res.send("Get to index has been acknowledged");
   res.sendFile("./public/index.html", { root: __dirname });
 });
@@ -36,12 +48,12 @@ app.get("/index", (req, res) => {
   res.redirect("/");
 });
 app.get("/signup", (req, res) => {
-  p("Register page has been requested here");
+  //   p("Register page has been requested here");
   //   res.send("Get for register page has been registered");
   res.sendFile("./public/register.html", { root: __dirname });
 });
 app.post("/signup", urlencodedParser, (req, res) => {
-  p("Incoming form detected");
+  //   p("Incoming form detected");
   //   p(req.body);
   //   p(req.params);
   p("\n\n");
@@ -51,6 +63,21 @@ app.post("/signup", urlencodedParser, (req, res) => {
   p(req.body.email);
   p("\n\n");
 
+  const newUser = new userDB({
+    firstName: req.body.first_name,
+    lastName: req.body.last_name,
+    password: req.body.password,
+    email: req.body.email,
+  });
+
+  newUser
+    .save()
+    .then((result) => {
+      p(result);
+    })
+    .catch((err) => {
+      p(err);
+    });
   res.redirect("/");
 });
 app.get("/login", (req, res) => {
