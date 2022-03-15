@@ -8,13 +8,24 @@ const mongoose = require("mongoose");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
+const userdb = require("./models/user");
 
 // connect to mongodb
 const dbURI =
   "mongodb+srv://boiledpotatos:tomato1234@endgame.ttbgl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-mongoose.connect(dbURI);
+mongoose
+  .connect(dbURI)
+  .then((result) => {
+    p("Successfully connected to db");
+    app.listen(PORT, () => {
+      p("request has been made");
+    });
+  })
+  .catch((err) => p(err));
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+// mongoose and mongo sandbox routes
 
 app.get("/", (req, res) => {
   p("Index has been requested");
@@ -39,16 +50,13 @@ app.post("/signup", urlencodedParser, (req, res) => {
   p(req.body.password);
   p(req.body.email);
   p("\n\n");
+
   res.redirect("/");
 });
 app.get("/login", (req, res) => {
   p("login request has been made");
   res.sendFile("./public/login.html", { root: __dirname });
 });
-
 app.use((req, res) => {
   res.send("404: Page not found!");
-});
-app.listen(PORT, () => {
-  p("request has been made");
 });
