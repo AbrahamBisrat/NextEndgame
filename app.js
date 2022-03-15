@@ -12,17 +12,13 @@ const userDB = require("./models/user");
 const fs = require("fs");
 
 // connect to mongodb
-let dbURI;
-function readContent(callback) {
-  fs.readFile("./dbURI.txt", "utf8", function (err, content) {
-    if (err) return callback(err);
-    callback(null, content);
-  });
-}
-
-readContent(function (err, content) {
-  p(content);
-  dbURI = content;
+const dbURI = fs.readFileSync("./dbURI.txt", "utf8", (err, data) => {
+  if (err) {
+    p("Error reading db uri config file");
+    p(err);
+    return;
+  }
+  data;
 });
 p("db string ", typeof dbURI);
 mongoose
