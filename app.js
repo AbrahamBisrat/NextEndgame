@@ -93,7 +93,13 @@ app.post("/login", urlencodedParser, (req, res) => {
           user.email === req.body.email && user.password === req.body.password
       ).length;
       p(found);
-      res.sendFile("./public/membersOnly.html", { root: __dirname }); // convert to ejs template with the user name
+
+      if (found >= 1) {
+        res.sendFile("./public/membersOnly.html", { root: __dirname });
+        // convert to ejs template with the user name
+      } else {
+        res.sendFile("./public/index.html", { root: __dirname });
+      }
     })
     .catch((err) => p(err));
   res.redirect("/");
