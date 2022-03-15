@@ -37,32 +37,35 @@
             <div class="input-field col s6">
               <input
                 placeholder="first name"
-                id="first_name"
+                name="first_name"
                 type="text"
                 class="validate"
+                required
               />
               <label for="first_name">First Name</label>
             </div>
             <div class="input-field col s6">
               <input
-                id="last_name"
+                name="last_name"
                 placeholder="last name"
                 class="validate"
                 type="text"
+                required
               />
               <label for="last_name">Last Name</label>
             </div>
-          </div>
+          </div> 
           <div class="row">
             <div class="input-field col s12">
-              <input type="email" id="email" class="validate" />
+              <input type="email" name="email" class="validate" required/>
               <label for="email">Email</label>
             </div>
             <div class="input-field col s12">
               <input
                 type="password"
-                id="password"
+                name="password"
                 placeholder="do not put your bank password"
+                required
               />
               <label for="password">Password</label>
             </div>
@@ -70,9 +73,7 @@
               <input
                 type="submit"
                 class="btn waves-effect waves-light blue accent-4"
-                name="action"
-                id="submitButton"
-              />
+                />
             </div>
           </div>
         </form>

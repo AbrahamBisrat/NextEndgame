@@ -5,7 +5,10 @@ function p(text) {
 const PORT = process.env.PORT || 4000;
 
 const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
+
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 app.get("/", (req, res) => {
   p("Index has been requested");
@@ -20,8 +23,16 @@ app.get("/signup", (req, res) => {
   //   res.send("Get for register page has been registered");
   res.sendFile("./public/register.html", { root: __dirname });
 });
-app.post("/signup", (req, res) => {
+app.post("/signup", urlencodedParser, (req, res) => {
   p("Incoming form detected");
+  //   p(req.body);
+  //   p(req.params);
+  p("\n\n");
+  p(req.body.first_name);
+  p(req.body.last_name);
+  p(req.body.password);
+  p(req.body.email);
+  p("\n\n");
   res.redirect("/");
 });
 app.get("/login", (req, res) => {
