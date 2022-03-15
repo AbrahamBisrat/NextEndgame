@@ -79,6 +79,25 @@ app.get("/login", (req, res) => {
   p("login request has been made");
   res.sendFile("./public/login.html", { root: __dirname });
 });
+app.post("/login", urlencodedParser, (req, res) => {
+  p("\n\n");
+  p(req.body.email);
+  p(req.body.password);
+  p("\n\n");
+  userDB
+    .find()
+    .then((result) => {
+      //   p(result);
+      const found = result.filter(
+        (user) =>
+          user.email === req.body.email && user.password === req.body.password
+      ).length;
+      p(found);
+      res.sendFile("./public/membersOnly.html", { root: __dirname }); // convert to ejs template with the user name
+    })
+    .catch((err) => p(err));
+  res.redirect("/");
+});
 app.use((req, res) => {
   res.send("404: Page not found!");
 });
