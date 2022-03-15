@@ -1,0 +1,11 @@
+{
+  "name": "nextendgame",
+  "version": "1.0.0",
+  "description": "Chess website buit with Node, Mongo, Materialize, Express, EJS, and more...",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AbrahamBisrat",
+  "license": "ISC"
+}
