@@ -20,7 +20,6 @@ const dbURI = fs.readFileSync("./dbURI.txt", "utf8", (err, data) => {
   }
   data;
 });
-p("db string ", typeof dbURI);
 mongoose
   .connect(dbURI)
   .then((result) => {
