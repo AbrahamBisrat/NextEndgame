@@ -4,8 +4,13 @@
   "description": "Chess website buit with Node, Mongo, Materialize, Express, EJS, and more...",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon app.js -e ejs,js"
   },
   "author": "AbrahamBisrat",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.17.3",
+    "livereload": "^0.9.3"
+  }
 }
