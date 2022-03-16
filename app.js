@@ -18,6 +18,7 @@ app.use(
   session({
     resave: true, // force save even if not modified
     saveUninitialized: false,
+    secret: process.env.SESSION_SECRET,
   })
 );
 
@@ -33,7 +34,7 @@ mongoose
   .catch((err) => p(err));
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
-p(process.env.DBURI);
+
 // mongoose and mongo sandbox routes
 
 app.get("/", (req, res) => {
@@ -90,20 +91,35 @@ app.post("/login", urlencodedParser, (req, res) => {
     .find()
     .then((result) => {
       //   p(result);
-      const found = result.filter(
+      const userData = result.filter(
         (user) =>
           user.email === req.body.email && user.password === req.body.password
-      ).length;
-      p(found);
+      );
+      //   p("user data");
+      //   p(userData);
 
-      if (found >= 1) {
+      if (userData.length >= 1) {
+        // user authenticated to be legit
+
+        req.session.user = userData;
+        req.session.save();
+        // res.
         res.sendFile("./public/membersOnly.html", { root: __dirname });
         // convert to ejs template with the user name
+        return;
       } else {
-        res.sendFile("./public/index.html", { root: __dirname });
+        // res.sendFile("./public/index.html", { root: __dirname });
+        res.redirect("/login");
       }
     })
     .catch((err) => p(err));
+});
+app.get("/user", (req, res) => {
+  res.send(req.session.user);
+});
+app.get("/logout", (req, res) => {
+  p("logout requested");
+  req.session.destroy();
   res.redirect("/");
 });
 app.use((req, res) => {
