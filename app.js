@@ -1,7 +1,7 @@
 function p(text) {
   console.log(text);
 }
-
+require("dotenv").config();
 const PORT = process.env.PORT || 4000;
 
 const mongoose = require("mongoose");
@@ -10,6 +10,17 @@ const bodyParser = require("body-parser");
 const app = express();
 const userDB = require("./models/user");
 const fs = require("fs");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+
+// Session managment
+app.use(cookieParser());
+app.use(
+  session({
+    resave: true, // force save even if not modified
+    saveUninitialized: false,
+  })
+);
 
 // connect to mongodb
 const dbURI = fs.readFileSync("./dbURI.txt", "utf8", (err, data) => {
