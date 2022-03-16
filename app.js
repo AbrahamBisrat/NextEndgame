@@ -9,7 +9,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const userDB = require("./models/user");
-const fs = require("fs");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 
@@ -22,27 +21,19 @@ app.use(
   })
 );
 
-// connect to mongodb
-const dbURI = fs.readFileSync("./dbURI.txt", "utf8", (err, data) => {
-  if (err) {
-    p("Error reading db uri config file");
-    p(err);
-    return;
-  }
-  data;
-});
+const dbURI = process.env.DBURI;
 mongoose
   .connect(dbURI)
   .then((result) => {
     p("Successfully connected to db");
     app.listen(PORT, () => {
-      p("request has been made");
+      p(`request has been made to port : ${PORT}`);
     });
   })
   .catch((err) => p(err));
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
-
+p(process.env.DBURI);
 // mongoose and mongo sandbox routes
 
 app.get("/", (req, res) => {
