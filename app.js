@@ -32,7 +32,6 @@ mongoose
     });
   })
   .catch((err) => p(err));
-
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 // mongoose and mongo sandbox routes
@@ -40,6 +39,10 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.get("/", (req, res) => {
   //   p("Index has been requested");
   //   res.send("Get to index has been acknowledged");
+  if (req.session.user != null || req.session.user != undefined) {
+    res.sendFile("./public/membersOnly.html", { root: __dirname }); // real implementation required
+    return;
+  }
   res.sendFile("./public/index.html", { root: __dirname });
 });
 app.get("/index", (req, res) => {
@@ -79,8 +82,14 @@ app.post("/signup", urlencodedParser, (req, res) => {
   res.redirect("/");
 });
 app.get("/login", (req, res) => {
-  p("login request has been made");
-  res.sendFile("./public/login.html", { root: __dirname });
+  // if user has already been authenticated
+  if (req.session.user != null || req.session.user != undefined) {
+    // This is just for test
+    res.sendFile("./public/membersOnly.html", { root: __dirname }); // real implementation required
+  } else {
+    p("login request has been made");
+    res.sendFile("./public/login.html", { root: __dirname });
+  }
 });
 app.post("/login", urlencodedParser, (req, res) => {
   p("\n\n");
@@ -122,6 +131,7 @@ app.get("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/");
 });
+// app.get('/')
 app.use((req, res) => {
   res.send("404: Page not found!");
 });
